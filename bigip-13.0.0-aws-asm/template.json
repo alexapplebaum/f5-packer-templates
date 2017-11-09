@@ -8,7 +8,7 @@
     "source_ami": "ami-a4bc27c4",
     "instance_type": "m4.2xlarge",
     "associate_public_ip_address": "true",
-    "ami_name": "BIGIP-ENG-HF",
+    "ami_name": "BIGIP-13.0.0-w-ASM",
     "ami_regions": "us-west-2",
     "ami_users": ""
   },
@@ -31,7 +31,7 @@
   "provisioners": [
     {
       "type": "shell-local",
-      "command": "sleep 180"
+      "command": "sleep 60"
     },
     {
       "type": "file",
@@ -39,32 +39,9 @@
       "destination": "/var/tmp/wait-for-bigip.sh"
     },
     {
-      "type": "shell",
-      "skip_clean": "true",
-      "execute_command": "run util bash -c 'chmod +x {{ .Path }}; env {{ .Vars }} {{ .Path }}'",
-      "inline": [
-          "bash /var/tmp/wait-for-bigip.sh"
-      ]
-    },
-    {
-     "type": "file",
-     "source": "software/BIGIP-13.0.0.0.0.1645.iso",
-     "destination": "/shared/images/BIGIP-13.0.0.0.0.1645.iso"
-    },
-    {
-     "type": "file",
-     "source": "software/Hotfix-BIGIP-13.0.0.2.152.1671-HF2-ENG.iso",
-     "destination": "/shared/images/Hotfix-BIGIP-13.0.0.2.152.1671-HF2-ENG.iso"
-    },
-    {
-      "type": "shell",
-      "expect_disconnect": "true",
-      "skip_clean": "true",
-      "execute_command": "run util bash -c 'chmod +x {{ .Path }}; env {{ .Vars }} {{ .Path }}'",
-      "inline": [
-          "tmsh install sys software hotfix Hotfix-BIGIP-13.0.0.2.152.1671-HF2-ENG.iso create-volume volume HD1.2 reboot"
-      ],
-      "pause_before": "600s"
+      "type": "file",
+      "source": "scripts/build.sh",
+      "destination": "/var/tmp/build.sh"
     },
     {
       "type": "shell",
@@ -73,17 +50,9 @@
       "expect_disconnect": "true",
       "start_retry_timeout": "10m", 
       "inline": [
-          "tmsh load sys config default",
-          "tmsh save /sys config",
-          "tmsh run util finalize-custom-ami",
-          "rm -fr /opt/cloud",
-          "rm -f /etc/sysconfig/network"
+          "bash /var/tmp/wait-for-bigip.sh",
+          "bash /var/tmp/build.sh"
       ]
-    },
-    {
-      "type": "file",
-      "source": "files/confpp.dat",
-      "destination": "/etc/confpp.dat"
     }
   ]
 }

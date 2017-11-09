@@ -4,3 +4,4 @@ f5-packer-templates.iml
 **/*.iso
 **/packer_cache
 **/.vagrant
+*.bak
