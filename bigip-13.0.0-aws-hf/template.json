@@ -5,12 +5,14 @@
     "region": "us-west-2",
     "vpc_id": "",
     "subnet_id": "",
-    "source_ami": "ami-a4bc27c4",
+    "source_ami": "ami-67d90b1f",
     "instance_type": "m4.2xlarge",
     "associate_public_ip_address": "true",
-    "ami_name": "BIGIP-13.0.0.2.152.1671-HF2-ENG",
+    "ami_name": "BIGIP-13.0.0.3.49.1679-HF3-ENG-v3",
     "ami_regions": "us-west-2",
-    "ami_users": ""
+    "ami_users": "",
+    "ssh_keypair_name": "",
+    "ssh_private_key_file": ""
   },
   "builders": [{
     "type": "amazon-ebs",
@@ -26,7 +28,9 @@
     "ami_users": "{{user `ami_users`}}",
     "ami_regions": "{{user `ami_regions`}}",
     "ssh_username": "admin",
-    "ssh_timeout" : "20m"
+    "ssh_timeout" : "20m",
+    "ssh_keypair_name": "{{user `ssh_keypair_name`}}",
+    "ssh_private_key_file": "{{user `ssh_private_key_file`}}"
   }],
   "provisioners": [
     {
@@ -53,20 +57,23 @@
     },
     {
      "type": "file",
-     "source": "software/Hotfix-BIGIP-13.0.0.2.152.1671-HF2-ENG.iso",
-     "destination": "/shared/images/Hotfix-BIGIP-13.0.0.2.152.1671-HF2-ENG.iso"
+     "source": "software/Hotfix-BIGIP-13.0.0.3.49.1679-HF3-ENG.iso",
+     "destination": "/shared/images/Hotfix-BIGIP-13.0.0.3.49.1679-HF3-ENG.iso"
     },
     {
       "type": "shell",
+      "pause_before": "15s",
       "expect_disconnect": "true",
       "skip_clean": "true",
       "execute_command": "run util bash -c 'chmod +x {{ .Path }}; env {{ .Vars }} {{ .Path }}'",
       "inline": [
-          "tmsh install sys software hotfix Hotfix-BIGIP-13.0.0.2.152.1671-HF2-ENG.iso create-volume volume HD1.2 reboot"
-      ],
-      "pause_before": "600s"
+          "tmsh install sys software hotfix Hotfix-BIGIP-13.0.0.3.49.1679-HF3-ENG.iso create-volume volume HD1.2 reboot",
+          "sleep 900",
+          "tmsh show sys software"
+      ]
     },
     {
+      "pause_before": "420s",
       "type": "file",
       "source": "files/confpp.dat",
       "destination": "/var/tmp/confpp.dat"

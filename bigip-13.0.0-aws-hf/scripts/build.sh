@@ -33,6 +33,8 @@ rm -f /config/f5-rest-device-id
 
 # Remove gateway from files
 cp /var/tmp/confpp.dat /etc/confpp.dat
+cp /usr/share/defaults/BigDB.dat.virtual /config/BigDB.dat
+
 rm -f /etc/sysconfig/network
 
 # Remove cloud-init so it starts up again
@@ -40,7 +42,7 @@ rm -f /etc/cloud/.cloud.dat
 rm -fr /opt/cloud/*
 
 # Optinally clean up logs
-rm -rf /var/log/*
+# rm -rf /var/log/*
 
 
 exit 0
