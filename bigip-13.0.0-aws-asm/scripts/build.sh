@@ -28,8 +28,13 @@ tmsh run util finalize-custom-ami
 bigstart stop mcpd
 rm -f /var/db/mcpdb*
 
-# Remove Gateway
-rm -f /etc/sysconfig/network
+# Remove gateway from files
+cp /defaults/fs/etc/confpp.dat /etc/confpp.dat
+cp /usr/share/defaults/BigDB.dat.virtual /config/BigDB.dat
+
+# rm -f /etc/sysconfig/network
+sed -i -e 's/HOSTNAME=.*/HOSTNAME=None/g' /etc/sysconfig/network
+sed -i -e 's/GATEWAY=.*/GATEWAY=None/g' /etc/sysconfig/network
 
 # https://support.f5.com/csp/article/K44134742
 rm -f /config/f5-rest-device-id

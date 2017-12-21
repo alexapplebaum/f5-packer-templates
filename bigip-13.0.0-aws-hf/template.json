@@ -8,7 +8,7 @@
     "source_ami": "ami-67d90b1f",
     "instance_type": "m4.2xlarge",
     "associate_public_ip_address": "true",
-    "ami_name": "BIGIP-13.0.0.3.49.1679-HF3-ENG-v3",
+    "ami_name": "BIGIP-13.0.0.3.49.1679-HF3-ENG-v7-rm-network",
     "ami_regions": "us-west-2",
     "ami_users": "",
     "ssh_keypair_name": "",
@@ -71,12 +71,6 @@
           "sleep 900",
           "tmsh show sys software"
       ]
-    },
-    {
-      "pause_before": "420s",
-      "type": "file",
-      "source": "files/confpp.dat",
-      "destination": "/var/tmp/confpp.dat"
     },
     {
       "type": "file",
