@@ -8,7 +8,7 @@
     "source_ami": "ami-67d90b1f",
     "instance_type": "m4.2xlarge",
     "associate_public_ip_address": "true",
-    "ami_name": "BIGIP-13.0.0.3.49.1679-HF3-ENG-v7-rm-network",
+    "ami_name": "BIGIP-13.0.0.3.49.1679-HF3-ENG",
     "ami_regions": "us-west-2",
     "ami_users": "",
     "ssh_keypair_name": "",
@@ -74,6 +74,7 @@
     },
     {
       "type": "file",
+      "pause_before": "360s",
       "source": "scripts/build.sh",
       "destination": "/var/tmp/build.sh"
     },
