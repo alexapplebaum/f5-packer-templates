@@ -69,7 +69,7 @@
       "inline": [
           "tmsh install sys software hotfix Hotfix-BIGIP-13.0.0.3.49.1679-HF3-ENG.iso create-volume volume HD1.2 reboot",
           "while [ 1 ]; do if tmsh show sys software status | grep 'HD1.2' | grep '3.49.1679' | grep complete ; then break; fi; sleep 5; done",
-          "tmsh show sys software"
+          "tmsh show sys software status"
       ]
     },
     {
@@ -86,7 +86,8 @@
       "start_retry_timeout": "10m", 
       "inline": [
           "bash /var/tmp/wait-for-bigip.sh",
-          "bash /var/tmp/build.sh"
+          "bash /var/tmp/build.sh",
+          "cat /etc/sysconfig/network"
       ]
     }
   ]
