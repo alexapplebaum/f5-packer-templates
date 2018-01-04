@@ -68,13 +68,13 @@
       "execute_command": "run util bash -c 'chmod +x {{ .Path }}; env {{ .Vars }} {{ .Path }}'",
       "inline": [
           "tmsh install sys software hotfix Hotfix-BIGIP-13.0.0.3.49.1679-HF3-ENG.iso create-volume volume HD1.2 reboot",
-          "sleep 900",
+          "while [ 1 ]; do if tmsh show sys software status | grep 'HD1.2' | grep '3.49.1679' | grep complete ; then break; fi; sleep 5; done",
           "tmsh show sys software"
       ]
     },
     {
       "type": "file",
-      "pause_before": "360s",
+      "pause_before": "600s",
       "source": "scripts/build.sh",
       "destination": "/var/tmp/build.sh"
     },
@@ -91,3 +91,4 @@
     }
   ]
 }
+
