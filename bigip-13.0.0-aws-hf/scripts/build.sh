@@ -28,9 +28,18 @@ tmsh run util finalize-custom-ami
 bigstart stop mcpd
 rm -f /var/db/mcpdb*
 
+# Remove master key
+rm -fr /config/bigip/kstore/master
+
 # rm -f /etc/sysconfig/network
 sed -i -e 's/HOSTNAME=.*/HOSTNAME=None/g' /etc/sysconfig/network
 sed -i -e 's/GATEWAY=.*/GATEWAY=None/g' /etc/sysconfig/network
+
+# rm live install artifact
+sed -i -e 's/.*DHCLIENT_MGMT=.*//g' /usr/lib/install/parameters.sh
+sed -i -e 's/.*SELFIP=.*//g' /usr/lib/install/parameters.sh
+sed -i -e 's/.*NETMASK=.*//g' /usr/lib/install/parameters.sh
+sed -i -e 's/.*GATEWAY=.*//g' /usr/lib/install/parameters.sh
 
 # Remove gateway from files
 cp /defaults/fs/etc/confpp.dat /etc/confpp.dat
