@@ -49,6 +49,7 @@
       "execute_command": "run util bash -c 'chmod +x {{ .Path }}; env {{ .Vars }} {{ .Path }}'",
       "expect_disconnect": "true",
       "start_retry_timeout": "10m", 
+      "remote_folder": "/var/tmp",
       "inline": [
           "bash /var/tmp/wait-for-bigip.sh",
           "bash /var/tmp/build.sh"
