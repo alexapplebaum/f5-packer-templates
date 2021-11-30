@@ -44,8 +44,9 @@ rm -f /shared/ssh/ssh_host_*
 rm -f /home/admin/.ssh/authorized_keys
 
 # reset the device administrative account passwords to their default values
-echo "root:default" | chpasswd
-echo "admin:admin" | chpasswd
+# skipping as cloud images have no default password
+# echo "root:default" | chpasswd
+# echo "admin:admin" | chpasswd
 
 # Remove master key
 rm -fr /config/bigip/kstore/master
